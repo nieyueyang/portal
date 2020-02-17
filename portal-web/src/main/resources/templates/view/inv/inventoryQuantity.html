@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>库存现有量</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="libs/jquery.min.js"></script>
+    <script src="plugins/layer/layer.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+    <script src="libs/vue.min.js"></script>
+    <script src="plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="plugins/ztree/jquery.ztree.all.min.js"></script>
+    <script src="js/constant.js"></script>
+    <script src="js/common.js"></script>
+
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <div class="grid-btn">
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="params.warehouseName" @keyup.enter="params" placeholder="库房名称">
+            </div>
+            <div class="form-group col-sm-2">
+                <input type="text" class="form-control" v-model="params.materialDescription" @keyup.enter="params" placeholder="物料描述">
+            </div>
+            <a class="btn btn-default" @click="query">查询</a>
+            <!--<#if shiro.hasPermission("sys:user:save")>-->
+            <a class="btn btn-primary" @click="warehouselIn"><i class="fa fa-plus"></i>&nbsp;手工入库</a>
+            <!--</#if>-->
+            <!--<#if shiro.hasPermission("sys:user:update")>-->
+            <a class="btn btn-primary" @click="warehouselOut"><i class="fa fa-pencil-square-o"></i>&nbsp;手工出库</a>
+            <!--</#if>-->
+
+
+        </div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <div v-show="showWareIn" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+
+            <input id="materialCategory" type="hidden" class="form-control" v-model="material.materialCategory" placeholder="大类编码"/>
+            <input id="smallCategory" type="hidden" class="form-control" v-model="material.smallCategory" placeholder="小类编码"/>
+            <input id="unitId" type="hidden" class="form-control" v-model="material.unitId" placeholder="计量单位ID"/>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label">选择库房</div>
+                <div class="col-sm-10">
+                    <select id="warehouse" v-model="selected" class="form-control" @change="changeSelect">
+                            <option v-for="(warehouse,index) in warehouseList" :warehouseId="warehouse.id" :warehouseType="warehouse.warehouseType" :key="index" :value="warehouse.warehouseCode">{{warehouse.warehouseName}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" v-show="showVendor">
+                <div class="col-sm-2 control-label">供应商编码</div>
+                <div class="col-sm-10">
+                    <input id="vendorCode" type="text" class="form-control" v-model="vendor.vendorCode" @dblclick="selectVendor" readonly="readonly" placeholder="双击选择供应商"/>
+                </div>
+            </div>
+
+
+            <div class="form-group" v-show="showVendor">
+                <div class="col-sm-2 control-label">供应商名称</div>
+                <div class="col-sm-10">
+                    <input id="vendorName" type="text" class="form-control" v-model="vendor.vendorName" readonly="readonly" placeholder="供应商名称"/>
+                </div>
+            </div>
+            <div class="form-group" v-show="showVendor">
+                <div class="col-sm-2 control-label">产地</div>
+                <div class="col-sm-10">
+                    <input id="ProductionAddress" type="text" class="form-control" v-model="inventory.ProductionAddress" placeholder="产地"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">物料编码</div>
+                <div class="col-sm-10">
+                    <input id="materialCode" type="text" class="form-control" v-model="material.materialCode" @dblclick="selectMaterial" readonly="readonly" placeholder="双击选择物料"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">物料描述</div>
+                <div class="col-sm-10">
+                    <input id="materialDescription" type="text" class="form-control" v-model="material.materialDescription" readonly="readonly" placeholder="物料描述"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label">大类</div>
+                <div class="col-sm-10">
+                    <input id="materialCategoryName" type="text" class="form-control" v-model="material.materialCategoryName" readonly="readonly" placeholder="大类"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">小类</div>
+                <div class="col-sm-10">
+                    <input id="smallCategoryName" type="text" class="form-control" v-model="material.smallCategoryName" readonly="readonly" placeholder="小类"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">规格</div>
+                <div class="col-sm-10">
+                    <input id="specs" type="text" class="form-control" v-model="material.specs" readonly="readonly" placeholder="规格"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">型号</div>
+                <div class="col-sm-10">
+                    <input id="model" type="text" class="form-control" v-model="material.model" readonly="readonly" placeholder="型号"/>
+                </div>
+            </div>
+            <div class="form-group" v-show="showVendor">
+                <div class="col-sm-2 control-label">成本类型</div>
+                <div class="col-sm-10">
+                    <input id="costTypeName" type="text" class="form-control" v-model="material.costTypeName" readonly="readonly" placeholder="成本类型"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">数量</div>
+                <div class="col-sm-10">
+                    <input id="quantity" type="text" class="form-control" v-model="inventory.quantity" placeholder="请输入数量"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">单价</div>
+                <div class="col-sm-10">
+                    <input id="price" type="text" class="form-control" v-model="inventory.price" placeholder="请输入单价"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label">计量单位</div>
+                <div class="col-sm-10">
+                    <input id="unitName" type="text" class="form-control" v-model="material.unitName" readonly="readonly" placeholder="请选择计量单位"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="warehouselInSave" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- 出库  -->
+    <div v-show="showWareOut" class="panel panel-default">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-2 control-label">库房编码</div>
+                <div class="col-sm-10">
+                    <input id="warehouseCode" type="text" class="form-control" v-model="inventoryOut.warehouseCode" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">库房名称</div>
+                <div class="col-sm-10">
+                    <input id="warehouseName" type="text" class="form-control" v-model="inventoryOut.warehouseName" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">物料编码</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.materialCode" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">物料描述</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.materialDescription" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">大类</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.materialCategoryName" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">小类</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.smallCategoryName" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">单价</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.price" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">数量</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.quantity" readonly="readonly"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">出库数量</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.quantityOut"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label">单位</div>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" v-model="inventoryOut.unitName" readonly="readonly"/>
+                </div>
+            </div>
+
+            <div class="form-group" v-show="showDistribution">
+                <div class="col-sm-2 control-label">配送计划</div>
+                <div class="col-sm-10">
+                    <input id="distributionId" type="text" class="form-control" v-model="distributionPlan.distributionId" @dblclick="selectDistribution" readonly="readonly"  placeholder="双击选择配送计划"/>
+                </div>
+            </div>
+            <div class="form-group" v-show="showDistribution">
+                <div class="col-sm-2 control-label">配送年度</div>
+                <div class="col-sm-10">
+                    <input id="year" type="text" class="form-control" v-model="distributionPlan.year" readonly="readonly" placeholder="配送年度"/>
+                </div>
+            </div>
+            <div class="form-group" v-show="showDistribution">
+                <div class="col-sm-2 control-label">配送组别</div>
+                <div class="col-sm-10">
+                    <input id="distributionGroup" type="text" class="form-control" v-model="distributionPlan.distributionGroup" readonly="readonly" placeholder="配送组别"/>
+                </div>
+            </div>
+            <div class="form-group" v-show="showDistribution">
+                <div class="col-sm-2 control-label">村</div>
+                <div class="col-sm-10">
+                    <input id="village" type="text" class="form-control" v-model="distributionPlan.village" readonly="readonly" placeholder="配送村"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="warehouselOutSave" value="确定"/>
+                &nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+            </div>
+
+        </form>
+    </div>
+
+
+</div>
+
+<script src="js/modules/inv/inventoryQuantity.js"></script>
+</body>
+</html>

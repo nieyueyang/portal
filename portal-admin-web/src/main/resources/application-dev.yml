@@ -1,0 +1,83 @@
+server:
+    tomcat:
+      uri-encoding: UTF-8
+      max-threads: 1000
+      min-spare-threads: 30
+    port: 8090
+    servlet:
+      context-path: /portal-admin
+
+spring:
+    datasource:
+        #DruidDataSource 所需参数
+        type: com.alibaba.druid.pool.DruidDataSource
+#        driver-class-name: oracle.jdbc.driver.OracleDriver
+#        url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+#        username: hbistc_test
+#        password: hbistc_test
+
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/portal?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+        username: root
+        password: root
+        #连接池初始化大小
+        initialSize: 10
+        #连接池最小
+        minIdle: 10
+        #连接池最大
+        maxActive: 30
+        # 配置获取连接等待超时的时间
+        maxWait: 3000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 30000
+        validationQuery: SELECT 1 from dual
+        #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+        testWhileIdle: true
+        #申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能,这里建议配置为TRUE，防止取到的连接不可用
+        testOnBorrow: true
+        #归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能,设置为TRUE会降低性能
+        testOnReturn: false
+        #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        removeAbandoned: true
+        removeAbandonedTimeoutMillis: 20000
+        filters: log4j2,stat,wall
+        connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+        defaultAutoCommit: true
+        # Druid 监控 Servlet 配置参数
+        druidRegistrationUrl: /druid/*
+        resetEnable: true
+        loginUsername: admin
+        loginPassword: 888888
+        # Druid 监控过滤相关配置参数
+        filtersUrlPatterns: /*
+        exclusions: '*.js,*.gif,*.jpg,*.jpeg,*.png,*.css,*.ico,*.jsp,/druid/*'
+        sessionStatMaxCount: 2000
+        sessionStatEnable: false
+        principalSessionName: session_user_key
+        profileEnable: true
+
+    redis:
+        ###Redis数据库索引（默认为0）
+        database: 0
+        host: 127.0.0.1
+        port: 6379
+        password: deyun123
+        jedis:
+          pool:
+            ###连接池最大连接数（使用负值表示没有限制）
+            max-active: 100
+            ###连接池最大阻塞等待时间（使用负值表示没有限制）
+            max-wait: -1
+            ###连接池中的最大空闲连接
+            max-idle: 8
+            ###连接池中的最小空闲连接
+            min-idle: 0
+        ###连接超时时间（毫秒）
+        timeout: 5000
+
+swagger:
+  enabled: true

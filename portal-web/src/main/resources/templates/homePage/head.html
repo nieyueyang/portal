@@ -1,0 +1,68 @@
+<script>
+    function tabChange(tab,con){
+        $(tab).find("li").hover(
+            function(){
+                $(tab).find("li").removeClass("hover");
+                $(this).addClass("hover");
+                var index=$(this).index();
+                $(con).find("ul").eq(index).show()
+                    .siblings("ul").hide();
+            }
+        )
+    }
+
+    function getMore(url){
+        var u = encodeURI(url);
+        window.open(u);
+    }
+
+
+    function checkIsNbZh(type){
+        jQuery.ajax({
+            type: "get",
+            url: "#getAppServer()/login/checkIsNbZh.htm",
+            data: "type=" + type,
+            success: function (result) {
+                if(result.type=="success"){
+                    /*if(result.title=="ok"){
+
+                    }else{
+
+                    }*/
+                    window.location.href='#getAppServer()/'+result.title;
+                }else{
+                    alert(result.title);
+                }
+            }
+        });
+    }
+
+    function am(scr){
+        $('html,body').animate({scrollTop: scr}, 1000);
+    }
+</script>
+<div class="head">
+    <div class="head_con">
+        <a href="javascript:void(0);" class="logo fl" style="text-align:center"><img src="${request.contextPath}/images/service_center_logo.png" style="margin-top:15px;width:317px;height:53px"  /></a>
+        <div class="index_nav fr">
+            <ul>
+                <li><a href="http://www.hbisco.com" target="_blank">集团首页</a></li>
+                <li><a href="javascript:void(0)" onclick="checkIsNbZh('n')">管理平台</a></li>
+                <li><a href="javascript:am('2900px')">关于我们</a>
+                </li>
+                <li><a href="javascript:am('1910px')">河钢产品</a></li>
+                <li><a href="javascript:am('2360px')">营销网络</a></li>
+                <li><a href="javascript:am('300px')">新闻中心</a>
+                    <ol>
+                        <li><a href="javascript:void(0)" onclick="getMore('#getAppServer()/homePage/morecontent.htm?name=新闻中心-集团要闻');">集团要闻</a></li>
+                        <li><a href="javascript:void(0)" onclick="getMore('#getAppServer()/homePage/morecontent.htm?name=新闻中心-公司新闻');">公司新闻</a></li>
+                        <li><a href="javascript:void(0)" onclick="getMore('#getAppServer()/homePage/morecontent.htm?name=新闻中心-销售动态');">销售动态</a></li>
+                        <li><a href="javascript:void(0)" onclick="getMore('#getAppServer()/homePage/morecontent.htm?name=新闻中心-集团影片');">集团影片</a></li>
+                    </ol>
+                </li>
+                <li class="hover"><a href="#getAppServer()/homePage/index.htm" >首页</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>

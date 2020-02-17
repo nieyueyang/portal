@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>河钢集团客户服务中心</title>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/common.css"/>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/center.css"/>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/index.css"/>
+    <script type="text/javascript" src="${request.contextPath}/scripts/homePage/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/scripts/homePage/jquery.Xslider.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/vue.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            //导航下拉
+            $(".main_nav ul li").hover(
+                function(){
+                    $(this).has("ol").children("ol").show();
+                },
+                function(){
+                    $(this).has("ol").children("ol").hide();
+                }
+            )
+            // jQuery.getJSON("#getJsPath()/project/sy_upload_project.json", function(data) {
+            //     $.each(data.projectlist, function(i, item) {
+            //         if(item.c!="undefined"&&item.p==$("#bt").text()){
+            //             for(var va in item.c){
+            //                 if(item.c[va].n!="行业数据"&&item.c[va].n!="市场监控"){
+            //                     var name = item.p+"-"+item.c[va].n;
+            //                     var path = "$!crmFilesOp.uploadProject";
+            //                     if(path==name){
+            //                         $("#child").append("<li class='hover'><a href='#getAppServer()/homePage/morecontent.htm?name="+name+"'>"+item.c[va].n+"</a></li>");
+            //                     }else{
+            //                         $("#child").append("<li><a href='#getAppServer()/homePage/morecontent.htm?name="+name+"'>"+item.c[va].n+"</a></li>");
+            //                     }
+            //                 }
+            //             }
+            //         }
+            //     });
+            //
+            // });
+        })
+    </script>
+</head>
+<body>
+
+<div id="app" v-cloak>
+    <!--    插入头部-->
+    <#include "/homePage/head.html">
+
+    <div class="clear"></div>
+    <div class="main" style="margin-top: 110px;">
+        <div class="banner mt3">
+            <img src="${request.contextPath}/images/homePage/img/banner.jpg"/>
+        </div>
+        <div class="list2 mt10">
+            <div class="w1100 fr list_box">
+                <div class="path">您现在的位置：{{}}</div>
+                <div class="article">
+                    <div class="article_title">
+                        <h2 class="tc">{{content.title}}</h2>
+                        <p class="tc mt10">
+                            <span class="mr20">发布人：{{content.operator}}</span>
+                            <span class="mr20">发布时间：{{content.uploadTime.slice(0,10)}}</span>
+                            <span>浏览次数：{{content.views}}</span>
+                        </p>
+                    </div>
+                    <div class="article_con lh200">
+                        <p class="text_ind20" v-html = "content.content"></p>
+                        <div  style="height:auto;margin-top:20px;" class="loaddiv" >
+
+                            <ul>
+                                <a style="margin-right:150px;color:#666;font-size:14px" title="点击下载"> 【点击下载】 </a>
+                                <div  style="height:10px"></div>
+                                <li >
+                                    <a  style="color:red;"  href="#getAppServer()/homePage/fileDownLoad.htm?path=$!m">{{}}</a>
+                                </li>
+
+                            </ul>
+                        </div >
+                    </div>
+                </div>
+                <div class="other">
+                    <ul>
+                        <li>上一篇：
+                            <a href="#getAppServer()/homePage/detailsPage.htm?id=$!pre.id">{{}}</a>
+                        </li>
+                        <li>
+                            下一篇：
+                            <a href="#getAppServer()/homePage/detailsPage.htm?id=$!next.id">{{}}</a>
+
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+
+
+
+
+
+
+
+
+
+    <!--    导入底部-->
+    <#include "/homePage/footer_index.html">
+
+</div>
+
+<script type="text/javascript" src="${request.contextPath}/js/detailsPage.js"></script>
+</body>
+</html>

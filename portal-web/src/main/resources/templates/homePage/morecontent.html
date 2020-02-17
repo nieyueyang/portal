@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <title>河钢集团客户服务中心</title>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/common.css"/>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/center.css"/>
+    <link rel="stylesheet" type="text/css" href="${request.contextPath}/styles/homePage/index.css"/>
+    <script type="text/javascript" src="${request.contextPath}/scripts/homePage/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/scripts/homePage/jquery.Xslider.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/js/vue.min.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+
+    <!--    插入头部-->
+    <#include "/homePage/head.html">
+    <div class="clear"></div>
+    <div class="main" style="margin-top: 110px;">
+        <div class="banner mt3">
+            <img src="${request.contextPath}/images/homePage/img/banner.jpg"/>
+        </div>
+        <div class="list mt10">
+            <div class="w180 fl ">
+                <div class="box_title">
+                    <ul>
+                        <li id="bt">{{title}}</li>
+                    </ul>
+                </div>
+                <div class="aside">
+                    <ul id="child" ></ul>
+                </div>
+            </div>
+            <div class="w900 fr list_box">
+                <div class="path">您现在的位置：{{path}}</div>
+                <ul>
+                    <li v-if = "contentList.length > 0" v-for="item in contentList">
+                        <span class="time fr">{{item.uploadTime.slice(0,10)}}</span>
+                        <a target="_blank" :href="'${request.contextPath}/homePage/detailsPage.html?id='+item.id">{{item.title}}</a>
+                    </li>
+                    <div v-else style="text-align:center;">
+                        <span style="color:red">暂无相关数据！</span>
+                    </div>
+                </ul>
+                <div class="pages">
+                    #pagers($!{page},"/homePage/morecontent.htm?name=$!path")
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <!--    导入底部-->
+    <#include "/homePage/footer_index.html">
+
+
+</div>
+
+
+
+<script type="text/javascript" src="${request.contextPath}/js/morecontent.js"></script>
+</body>
+</html>

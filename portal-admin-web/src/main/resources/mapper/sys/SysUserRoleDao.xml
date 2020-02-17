@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sysUserRole">
+
+    <sql id="selectAllItems">
+		id,user_id,role_id,
+		create_user,create_user_name,create_time,modify_user,modify_time
+    </sql>
+
+    <select id="queryForCount"  resultType="Long">
+        select count(1) count
+        from sys_user_role
+        <include refid="where_sql"/>
+    </select>
+
+    <select id="queryByUserId" resultType="Long">
+        select role_id
+        from sys_user_role where user_id = #{userId}
+    </select>
+
+
+    <sql id="where_sql">
+        <where>
+            <if test="id !=null and id != ''">
+                id = #{id}
+            </if>
+            <if test="userId !=null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="roleId !=null and roleId != ''">
+                and role_id = #{roleId}
+            </if>
+        </where>
+    </sql>
+
+
+</mapper>

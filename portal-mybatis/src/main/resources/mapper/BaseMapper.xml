@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="com.baseDao">
+
+    <select id="select" resultType="HashMap">
+        SELECT
+            <foreach collection="COLUMNS" item="item" index="index" separator=",">
+                ${item}
+            </foreach>
+        FROM ${tableName}
+        <where>
+            <foreach collection="WHERE" index="key"  item="value" separator="and">
+               ${key} = #{value}
+            </foreach>
+        </where>
+    </select>
+
+
+	<insert id="insert" useGeneratedKeys="true"  keyProperty="id" parameterType="java.util.HashMap">
+
+        INSERT INTO ${tableName} (
+        <foreach collection="COLUMNS" item="item" index="index" separator=",">
+            ${item}
+        </foreach>
+        ) values (
+        <foreach collection="VALUES" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+	</insert>
+
+    <update id="update" parameterType="java.util.HashMap">
+        update ${tableName}
+        <set>
+            <foreach collection="COLUMNS" index="key" item="value" separator=",">
+                ${key} = #{value}
+            </foreach>
+        </set>
+
+        <where>
+            <foreach collection="Where" index="key" item="value"  separator="and">
+                ${key} = #{value}
+            </foreach>
+        </where>
+    </update>
+
+    <delete id="delete" parameterType="java.util.HashMap">
+        delete from ${tableName}
+        <where>
+            <foreach collection="Where" index="key" item="value"  separator="and">
+                ${key} = #{value}
+            </foreach>
+        </where>
+    </delete>
+
+    <delete id="deleteBatch" parameterType="java.util.HashMap">
+        delete from ${tableName} where id in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+
+</mapper>

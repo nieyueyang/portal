@@ -1,0 +1,60 @@
+
+
+/* Modal */
+
+.boxy-modal-blackout { position: absolute; background-color: #cccccc; left: 0; top: 0; }
+
+/* Border */
+
+.boxy-wrapper {position: absolute;border:7px solid rgba(160,160,160,0.5) !important; *border:7px solid #cccccc; border:8px solid #cccccc\9; -webkit-border-radius:6px; -moz-border-radius:6px; border-radius:6px; -webkit-box-shadow:0 0 18px rgba(0,0,0,0.5); -moz-box-shadow:0 0 18px rgba(0,0,0,0.5); box-shadow:0 0 18px rgba(0,0,0,0.5);}
+.boxy-wrapper.fixed {position:fixed !important;}
+
+ /*.boxy-border td {background-color:#666; opacity: 0.5; }
+  .boxy-border-x {height: 8px; }
+  .boxy-border-y {width: 8px;background-color:#666;opacity: 0.5; }
+  .boxy-left-top {}
+
+/* Title bar */
+
+/*.boxy-wrapper .title-bar { background-color: #336699; padding: 10px; position: relative; }*/
+.boxy-wrapper .title-bar {/* margin:10px;*/cursor: move;  padding-top:6px;padding-left:8px; position: relative;height: 19px;border-bottom: 1px solid #ccc; }	
+
+.boxy-wrapper .title-bar h2 { font-size: 14px; color: #555555; line-height: 1; margin: 0; padding: 0; font-weight: bold; }
+.boxy-wrapper .title-bar .close {font-weight:bold;  color: #555555; position: absolute; top: 6px; right: 6px;  line-height: 1;font-family:'Verdana'  }
+
+/* Content Region */
+
+.boxy-inner { background-color: white; padding:5px;}
+.boxy-div{}
+.boxy-content {padding: 10px 16px;line-height: 16px; }
+
+/* Question Boxes */
+
+.boxy-wrapper .question { width: 290px; min-height: 30px; }
+.boxy-wrapper .answers { text-align: right;padding-top: 10px; }
+.answers .button { padding:0px 5px; line-height:20px;min-width:50px; cursor:pointer; border:solid 1px #A6DDF2;background-color:#E1F4FB; color: #336699;font-weight: bold; }
+
+.readonly {background-color: #dedede;}
+/*输入框光标移上去的样式*/
+.inputFocus {border: solid 1px #ff6600;/*background-color: #f5f5f5*/}
+
+/**请等待的小图标*/
+.common_loading {display:block;height:16px;line-height: 18px;background:url(../images/panel_loading.gif) left no-repeat;padding-left: 25px;}
+
+/* 弹出提示 */
+.common_msg2 {display:block;min-height: 65px;padding-left: 10px;padding-bottom: 2px; }
+.common_msg2 .icons{display:block;height:65px;width: 68px;float: left;}
+.common_msg2 .icons.warn {background:url(../images/tanchu_warning.gif) left no-repeat;}
+.common_msg2 .icons.success {background:url(../images/tanchu_ok.gif) left no-repeat;}
+.common_msg2 .icons.error {background:url(../images/tanchu_sorry.gif) left no-repeat;}
+.common_msg2 .icons.icon_question {background:url(../images/tanchu_question.png) center no-repeat;}
+.common_msg2 .text{display:table-cell;float: left; padding-left:25px;padding-top:10px;font-size: 12px;line-height: 17px;}
+.common_msg2 .text.success{}
+.common_msg2 .text.warn{color: #ff6600;width:300px;}
+.common_msg2 .text.error{color: #ff0000;width:300px;}
+ 
+/**日历控件*/
+.dateIcon {background:#fff url(../images/datePicker.gif) no-repeat right;}
+
+
+

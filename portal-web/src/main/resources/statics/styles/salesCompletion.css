@@ -1,0 +1,26 @@
+
+.wrapperRight  #rightTab li .c1 {
+	color: rgb(0, 0, 198);
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.wrapperRight  #rightTab li .c2 {
+	color: rgb(58, 143, 192);
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.wrapperRight  #rightTab li .c3 {
+	color: rgb(58, 143, 192);
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.listBox table th {
+	line-height: 25px;
+	border: 1px solid #D1D7E0;
+	padding: 3px 5px;
+	font-weight: 300;
+	background: #D1E9E9 none repeat scroll 0% 0%;
+}

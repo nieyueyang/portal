@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sysRole">
+
+    <sql id="selectAllItems">
+		id,role_code,role_name,remark,
+		create_user,create_user_name,create_time,modify_user,modify_time
+    </sql>
+
+    <select id="queryForList"  resultType="com.tan.portal.web.sys.entity.SysRole">
+        select <include refid="selectAllItems"/>
+        from sys_role
+        <include refid="where_sql"/>
+    </select>
+
+    <select id="queryById"  resultType="com.tan.portal.web.sys.entity.SysRole">
+        select <include refid="selectAllItems"/>
+        from sys_role where id = #{id}
+    </select>
+
+    <sql id="where_sql">
+        <where>
+            <if test="id !=null and id != ''">
+                id = #{id}
+            </if>
+            <if test="roleCode !=null and roleCode != ''">
+                and role_code = #{roleCode}
+            </if>
+            <if test="roleName !=null and roleName != ''">
+                and role_name like concat('%', #{roleName}, '%')
+            </if>
+        </where>
+    </sql>
+
+
+</mapper>

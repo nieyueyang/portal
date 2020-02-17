@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sysUser">
+
+	<resultMap id="sysUserResult" type="com.tan.portal.web.sys.entity.SysUser">
+		<result column="id" property="id"/>
+		<result column="account" property="account"/>
+		<result column="name" property="name"/>
+		<result column="salt" property="salt"/>
+		<result column="sex" property="sex"/>
+		<result column="email" property="email"/>
+		<result column="mobile" property="mobile"/>
+		<result column="status" property="status"/>
+		<result column="dept_id" property="deptId"/>
+		<result column="create_user" property="createUser"/>
+		<result column="create_user_name" property="createUserName"/>
+		<result column="create_time" property="createTime"/>
+		<result column="modify_user" property="modifyUser"/>
+		<result column="modify_time" property="modifyTime"/>
+	</resultMap>
+
+	<resultMap id="sysUserExtendResult" type="com.tan.portal.web.sys.entity.SysUser" extends="sysUserResult">
+		<result column="password" property="password"/>
+	</resultMap>
+
+	<sql id="selectAllItems">
+  	id,account,name,salt,sex,email,mobile,status,dept_id,dept_name,
+  	create_user,create_user_name,create_time,modify_user,modify_time
+    </sql>
+
+	<select id="querySysUserByCode" resultMap="sysUserExtendResult">
+		select id,account,name,password,salt,sex,email,mobile,status,dept_id,
+  		create_user,create_user_name,create_time,modify_user,modify_time
+		from sys_user where account = #{account}
+	</select>
+
+	<select id="queryByAccount" resultMap="sysUserResult">
+		select <include refid="selectAllItems"/>
+		from sys_user where account = #{account}
+	</select>
+
+	<select id="queryById" resultMap="sysUserResult">
+		select <include refid="selectAllItems"/>
+		from sys_user where id = #{id}
+	</select>
+
+	<select id="queryForPage" resultMap="sysUserResult">
+		SELECT <include refid="selectAllItems"/>
+		FROM sys_user
+
+		<include refid="user_getPage_sql"/>
+		<if test="orderBy!=null and orderBy != ''">
+			order by #{orderBy}
+		</if>
+	</select>
+
+	<sql id="user_getPage_sql">
+		<where>
+			<if test="id !=null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="account !=null and account != ''">
+				and account like concat('%', #{account}, '%')
+			</if>
+			<if test="name !=null and name != ''">
+				and name like concat('%', #{name}, '%')
+			</if>
+			<!--<if test="type and type != ''">-->
+			<!--and  bitor(type,#{type})=type-->
+			<!--</if>-->
+
+		</where>
+	</sql>
+
+
+</mapper>

@@ -1,0 +1,28 @@
+body,div,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select,label,img,span{margin:0; padding:0;}
+body{font-size:12px; font-family:"宋体",Arial, Helvetica, sans-serif; color:#373737; }
+ul{list-style-type:none;}
+a{text-decoration:none;}
+a img{text-decoration:none; outline:none; border:none;}
+a:link{border:none;}
+
+
+
+
+/*单独登录页*/
+.w984{width: 984px;}
+.main{margin: 0 auto;}
+.login_head a{border:none;}
+.main_login{ background:url(../../images/login/login_bg.png) 0 center no-repeat; height:400px; padding:0 25px 0 619px;margin-bottom: 30px;}
+.main_login ul{ border:1px solid #e7e7e7; background-color:#f9f9f9; padding:0 0 20px; margin-top:40px; float: right;width: 340px; }
+.main_login ul h4{background: url(../../images/login/login_tt_bg.png) repeat-x scroll top left; border-bottom:1px solid #b8d2e6; height:40px; line-height:40px;font-weight:300; color:#014a8e; text-indent: 1em; margin-bottom: 30px; font-size: 18px;font-family: "微软雅黑"; }
+.main_login ul li{border: 1px solid #ddd; margin: 0px 30px 20px; padding: 7px 10px;font-size:13px; line-height: 20px; background-color: #fff;}
+.main_login ul li label{color: #a7a7a7; float: left;}
+.main_login ul li input{border: none;*border: 0; width: 190px;}
+.main_login ul li.yzm{width: 170px;}
+.main_login ul li.yzm input{width: 105px;}
+.main_login ul li.yzm_pic{float: right; margin: 0; padding: 0; border: none; margin-right: 30px;}
+.main_login ul li.yzm_pic img{width: 79px; height: 36px;}
+.main_login ul li.btn{border: none; padding: 0;}
+.main_login ul li.btn a{display:block;border-radius: 5px; background: url(../../images/login/login_btn_bg.png) repeat-x scroll top left;　height: 45px; line-height: 45px;  text-align: center; color: #fff; font-size: 18px;font-family: "微软雅黑"; }
+.main_login ul p.error_tip{text-align: center; color: #cd001c; font-size: 13px;}
+.login_foot{border-top: 1px solid #90a6b3; margin-top: 20px; padding-top: 20px; text-align: center; font-size: 12px;}

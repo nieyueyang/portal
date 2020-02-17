@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:v-validate="http://www.w3.org/1999/xhtml">
+<head>
+	<title>物料管理</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="plugins/jqgrid/ui.jqgrid-bootstrap.css">
+	<link rel="stylesheet" href="plugins/ztree/css/metroStyle/metroStyle.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="libs/jquery.min.js"></script>
+	<script src="plugins/layer/layer.js"></script>
+	<script src="libs/bootstrap.min.js"></script>
+	<script src="libs/vue.min.js"></script>
+	<script src="plugins/jqgrid/grid.locale-cn.js"></script>
+	<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+	<script src="plugins/ztree/jquery.ztree.all.min.js"></script>
+	<script src="js/constant.js"></script>
+	<script src="js/common.js"></script>
+	<script src="libs/vue-validator.min.js"></script>
+
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn">
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="params.description" @keyup.enter="query" placeholder="物料描述">
+			</div>
+			<a class="btn btn-default" @click="query">查询</a>
+			<!--<#if shiro.hasPermission("sys:user:save")>-->
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			<!--</#if>-->
+			<!--<#if shiro.hasPermission("sys:user:update")>-->
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			<!--</#if>-->
+			<!--<#if shiro.hasPermission("sys:user:delete")>-->
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			<!--</#if>-->
+		</div>
+		<table id="jqGrid"></table>
+		<div id="jqGridPager"></div>
+	</div>
+
+	<div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<!--<validator name="validation">-->
+			<form class="form-horizontal">
+				<div class="form-group">
+					<div class="col-sm-2 control-label">物料编码</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="itemMaterial.materialCode"  placeholder="物料编码"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">物料描述</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="itemMaterial.description" placeholder="物料描述"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">物料大类</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" style="cursor:pointer;" v-model="itemMaterial.materialCategoryName" @click="categoryTree" readonly="readonly" placeholder="物料大类"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">物料小类</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" style="cursor:pointer;" v-model="itemMaterial.smallCategoryName" @click="smallCategoryTree" readonly="readonly" placeholder="物料小类"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">计量单位</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" style="cursor:pointer;" v-model="itemMaterial.unitName" @click="unitTree" readonly="readonly" placeholder="计量单位"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">规格</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="itemMaterial.specs" placeholder="规格"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">型号</div>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" v-model="itemMaterial.model" placeholder="型号"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">成本类型</div>
+					<div class="col-sm-10">
+						<select id="costType" v-model="itemMaterial.costType" class="form-control">
+							<option value="">---请选择---</option>
+							<option value="0">实际成本</option>
+							<option value="1">加权平均价</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label">状态</div>
+					<label class="radio-inline">
+						<input type="radio" name="status" value="0" v-model="itemMaterial.status"/> 正常
+					</label>
+					<label class="radio-inline">
+						<input type="radio" name="status" value="1" v-model="itemMaterial.status"/> 禁用
+					</label>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2 control-label"></div>
+					<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+					&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reload" value="返回"/>
+				</div>
+			</form>
+		<!--</validator>-->
+	</div>
+</div>
+
+<!-- 选择大类 -->
+<div id="categoryLayer" style="display: none;padding:10px;">
+	<ul id="categoryTree" class="ztree"></ul>
+</div>
+
+<!-- 选择小类 -->
+<div id="smallCategoryLayer" style="display: none;padding:10px;">
+	<ul id="smallCategoryTree" class="ztree"></ul>
+</div>
+
+<!-- 选择计量单位 -->
+<div id="unitLayer" style="display: none;padding:10px;">
+	<ul id="unitTree" class="ztree"></ul>
+</div>
+
+<script src="js/modules/inv/invItemMaterial.js"></script>
+</body>
+</html>

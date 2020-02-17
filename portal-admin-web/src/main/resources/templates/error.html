@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!--<link rel="stylesheet" type="text/css" href="../../css/style.css"/>-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/constant.js"></script>
+    <script type="text/javascript">
+        var sec=10;
+        var s=0;
+
+        setTimeout('jump()',sec*1000);
+        setInterval('show()',1000);
+
+        function jump(){
+            location.href= baseURL + "login.html";
+        }
+
+        function show() {
+            s=s+1;
+            if (s>sec) return;
+            o=document.getElementById('second');
+            o.innerHTML=(sec-s)+'秒钟后将会跳转到首页';
+        }
+    </script>
+</head>
+<body>
+
+<div class="main">
+    <div class="error-404">
+        <p>
+            登陆超时，请重新登陆...
+        </p>
+        <div class="btn-box">
+            <a href="login.html">重新登陆</a>
+            <a id="second">
+                <script type="text/javascript">document.write(sec)</script>
+                秒钟后将返回登陆页
+            </a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

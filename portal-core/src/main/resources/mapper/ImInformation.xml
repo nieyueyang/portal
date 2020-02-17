@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.imInformation">
+
+    <sql id="selectAllItems">
+		id,modular_id,modular_name,title,content,path,operator_id,operator,upload_time,views,
+		create_user,create_user_name,create_time,modify_user,modify_time
+    </sql>
+
+    <select id="queryForList"  resultType="com.tan.portal.core.information.entity.ImInformationEntity">
+        select <include refid="selectAllItems"/>
+        from im_information
+        <include refid="where_sql"/>
+        order by upload_time desc
+    </select>
+
+    <select id="queryById"  resultType="com.tan.portal.core.information.entity.ImInformationEntity">
+        select <include refid="selectAllItems"/>
+        from im_information where id = #{id}
+    </select>
+
+
+    <sql id="where_sql">
+        <where>
+            <if test="id !=null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="modularId !=null and modularId != ''">
+                and modular_id = #{modularId}
+            </if>
+            <if test="modularName !=null and modularName != ''">
+                and modular_name like concat('%', #{modularName}, '%')
+            </if>
+
+        </where>
+    </sql>
+
+
+</mapper>

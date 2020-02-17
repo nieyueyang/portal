@@ -1,0 +1,34 @@
+spring:
+  profiles:
+    active: dev
+
+
+  aop.proxy:
+    target-class: true
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/statics/,classpath:/public/
+  freemarker:
+    suffix: .html
+    content-type: text/html
+    charset: UTF-8
+    cache: false
+    template-loader-path: classpath:/templates
+    request-context-attribute: request
+    settings:
+      default_encoding: UTF-8
+      datetime_format: yyyy-MM-dd HH:mm:ss
+      date_format: yyyy-MM-dd
+      time_format: HH:mm:ss
+      number_format: '0.##'   #数字格式化，无小数点
+
+
+mybatis:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package:
+  configuration:
+    ##字段开启驼峰映射
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+    ##自定义type-handlers的位置
+    type-handlers-package: com.tan.*.typeHanders
+    cache-enabled: false

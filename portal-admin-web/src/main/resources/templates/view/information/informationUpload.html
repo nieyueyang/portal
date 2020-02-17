@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <#include "/view/layout/head.html">
+    <title>资讯信息上传</title>
+    <link rel="stylesheet" href="${request.contextPath}/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/css/all-skins.min.css">
+    <script src="${request.contextPath}/libs/jquery.min.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/libs/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript" src="${request.contextPath}/libs/tinymce/js/tinymce/jquery.tinymce.min.js"></script>
+</head>
+<body class="skin-blue" style="width:100%">
+<div id="app" v-cloak style="background:#FFFFFF; color:#000000">
+    <!--    页面头部-->
+    <#include "/view/layout/top_open.html">
+
+    <div class="panel panel-default" style="margin: 10px 30px 10px 30px">
+        <div class="panel-heading">{{title}}</div>
+        <form class="form-horizontal" style="width:100%;">
+            <div class="form-group">
+                <div class="form-font">模块编码：</div>
+                <div>
+                    <input type="text" class="form-input" v-model="information.modularName" placeholder="模块编码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-font">标题：</div>
+                <div>
+                    <input type="text" class="form-input" v-model="information.title" placeholder="标题"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-font">选择附件：</div>
+                <div>
+                    <input type="text" class="form-input" v-model="information.path" placeholder="选择附件"/>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin: 10px 30px 10px 30px">
+                <div >
+                    <textarea id ="txt" style="width:100%"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2 control-label"></div>
+                <input type="button" class="btn btn-primary" @click="submit"  value="提交"/>
+                <input type="button" class="btn btn-warning" @click="close"  value="关闭"/>
+            </div>
+        </form>
+    </div>
+
+
+    <!--  页面底部-->
+    <#include "/view/layout/footer_open.html">
+
+</div>
+
+<script src="${request.contextPath}/js/modules/information/infomationUpload.js"></script>
+
+
+</body>
+</html>

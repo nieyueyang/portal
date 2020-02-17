@@ -1,0 +1,100 @@
+<#macro layout>
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <title>库存管理系统</title>
+        <link rel="stylesheet" href="${request.contextPath}/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${request.contextPath}/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${request.contextPath}/css/AdminLTE.min.css">
+        <link rel="stylesheet" href="${request.contextPath}/css/all-skins.min.css">
+        <link rel="stylesheet" href="${request.contextPath}/plugins/jqgrid/ui.jqgrid-bootstrap.css">
+        <link rel="stylesheet" href="${request.contextPath}/plugins/ztree/css/metroStyle/metroStyle.css">
+        <link rel="stylesheet" href="${request.contextPath}/css/main.css">
+    </head>
+    <body class="hold-transition skin-blue sidebar-mini">
+
+
+    <div class="wrapper" id="rrapp" v-cloak>
+
+        <!--    页面头部-->
+        <#include "header.html">
+
+        <!--    页面左侧菜单-->
+        <#include "left.html">
+
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <ol class="breadcrumb" id="nav_title" style="position:static;float:none;">
+                    <li class="active"><i class="fa fa-home" style="font-size:20px;position:relative;top:2px;left:-3px;"></i> &nbsp; 首页</li>
+                    <li class="active">{{navTitle}}</li>
+                </ol>
+            </section>
+
+            <section id="content" class="content" style="background:#fff;">
+                <#nested>
+            </section>
+
+
+        </div>
+
+        <!--  页面底部-->
+        <#include "footer.html">
+
+
+        <div class="control-sidebar-bg"></div>
+
+        <!-- 修改密码 -->
+        <div id="passwordLayer" style="display: none;">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">账号</div>
+                        <span class="label label-success" style="vertical-align: bottom;">{{user.account}}</span>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">原密码</div>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" v-model="password" placeholder="原密码"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">新密码</div>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" v-model="newPassword" placeholder="新密码"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-2 control-label">确认新密码</div>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" v-model="confirmPassword" placeholder="确认新密码"/>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+
+    <script src="${request.contextPath}/libs/jquery.min.js"></script>
+    <script src="${request.contextPath}/libs/vue.min.js"></script>
+    <script src="${request.contextPath}/libs/router.js"></script>
+    <script src="${request.contextPath}/libs/bootstrap.min.js"></script>
+    <script src="${request.contextPath}/plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="${request.contextPath}/plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="${request.contextPath}/plugins/ztree/jquery.ztree.all.min.js"></script>
+    <script src="${request.contextPath}/libs/app.js"></script>
+    <script src="${request.contextPath}/plugins/layer/layer.js"></script>
+    <script src="${request.contextPath}/js/sha256.js"></script>
+    <script src="${request.contextPath}/js/constant.js"></script>
+    <script src="${request.contextPath}/js/common.js"></script>
+    <script src="${request.contextPath}/js/index.js"></script>
+    </body>
+    </html>
+
+</#macro>
